@@ -49,17 +49,17 @@ public class LocalNewsController {
     }
 
     @GetMapping("/wordcloud")
-    public ResponseEntity<List<List<String>>> getWordCloud(){
+    public ResponseEntity<List<List<Object>>> getWordCloud(){
         Jedis jedis = jedisPool.getResource();
         Map<String, String> wordcloud = jedis.hgetAll("wordcloud");
-        List<List<String>> result = new ArrayList<>();
+        List<List<Object>> result = new ArrayList<>();
         for (String s : wordcloud.keySet()) {
-            List<String> list = new ArrayList<>();
+            List<Object> list = new ArrayList<>();
             list.add(s);
-            list.add(wordcloud.get(s));
+            list.add(Integer.parseInt(wordcloud.get(s)));
             result.add(list);
         }
 
-        return new ResponseEntity<List<List<String>>>(result, HttpStatus.OK);
+        return new ResponseEntity<List<List<Object>>>(result, HttpStatus.OK);
     }
 }
