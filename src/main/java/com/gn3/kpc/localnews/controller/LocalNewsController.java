@@ -1,7 +1,6 @@
 package com.gn3.kpc.localnews.controller;
 
 import com.gn3.kpc.localnews.model.entity.LocalNews;
-import com.gn3.kpc.localnews.model.entity.Temperature;
 import com.gn3.kpc.localnews.service.LocalNewsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,13 +38,11 @@ public class LocalNewsController {
     }
 
     @GetMapping("/temperature")
-    public ResponseEntity<String> getTemperature(){
+    public ResponseEntity<Integer> getTemperature(){
         Jedis jedis = jedisPool.getResource();
-        String positive = jedis.get("positive");
-        String negative = jedis.get("negative");
-        Temperature temperature = new Temperature();
-        temperature.setPositive(positive);
-        temperature.setNegative(negative);
-        return new ResponseEntity<String>(positive, HttpStatus.OK);
+        int positive = Integer.parseInt(jedis.get("positive"));
+        int negative = Integer.parseInt(jedis.get("negative"));
+        int result = (positive/(positive + negative))*100;
+        return new ResponseEntity<Integer>(result, HttpStatus.OK);
     }
 }
