@@ -39,13 +39,13 @@ public class LocalNewsController {
     }
 
     @GetMapping("/temperature")
-    public ResponseEntity<Temperature> getTemperature(){
+    public ResponseEntity<String> getTemperature(){
         Jedis jedis = jedisPool.getResource();
         String positive = jedis.get("positive");
         String negative = jedis.get("negative");
         Temperature temperature = new Temperature();
         temperature.setPositive(positive);
         temperature.setNegative(negative);
-        return new ResponseEntity<Temperature>(temperature, HttpStatus.OK);
+        return new ResponseEntity<String>(positive, HttpStatus.OK);
     }
 }
