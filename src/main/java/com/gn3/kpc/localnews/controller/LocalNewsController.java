@@ -58,7 +58,7 @@ public class LocalNewsController {
 
         List<List<Object>> result = new ArrayList<>();
         int cnt = 0;
-        for (String s : wordcloud.keySet()) {
+        for (String s : keySet) {
             List<Object> list = new ArrayList<>();
             list.add(s);
             list.add(Integer.parseInt(wordcloud.get(s)));
