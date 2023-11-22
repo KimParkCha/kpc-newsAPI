@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,5 +46,19 @@ public class LocalNewsController {
         double negative = Double.parseDouble(jedis.get("negative"));
         int result = (int) ((positive/(positive + negative))*100.0);
         return new ResponseEntity<Integer>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/temperature")
+    public ResponseEntity<List<List<String>>> getWordCloud(){
+        Jedis jedis = jedisPool.getResource();
+        Map<String, String> wordcloud = jedis.hgetAll("wordcloud");
+        List<List<String>> result = new ArrayList<>();
+        for (String s : wordcloud.keySet()) {
+            List<String> list = new ArrayList<>();
+            list.add(s);
+            list.add(wordcloud.get(s));
+        }
+
+        return new ResponseEntity<List<List<String>>>(result, HttpStatus.OK);
     }
 }
