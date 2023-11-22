@@ -63,7 +63,6 @@ public class LocalNewsController {
             list.add(s);
             list.add(Integer.parseInt(wordcloud.get(s)));
             result.add(list);
-            System.out.println(s + " " + Integer.parseInt(wordcloud.get(s)));
             if(cnt++ >= 200)break;
         }
 
