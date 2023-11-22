@@ -48,7 +48,7 @@ public class LocalNewsController {
         return new ResponseEntity<Integer>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/temperature")
+    @GetMapping("/wordcloud")
     public ResponseEntity<List<List<String>>> getWordCloud(){
         Jedis jedis = jedisPool.getResource();
         Map<String, String> wordcloud = jedis.hgetAll("wordcloud");
