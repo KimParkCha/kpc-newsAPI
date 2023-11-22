@@ -59,6 +59,7 @@ public class LocalNewsController {
             list.add(wordcloud.get(s));
             System.out.println(s);
             System.out.println(wordcloud.get(s));
+            result.add(list);
         }
 
         return new ResponseEntity<List<List<String>>>(result, HttpStatus.OK);
