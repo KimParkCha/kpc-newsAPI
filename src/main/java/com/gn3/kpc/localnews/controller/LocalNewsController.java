@@ -56,7 +56,6 @@ public class LocalNewsController {
         List<String> keySet = new ArrayList<>(wordcloud.keySet());
         keySet.sort((o1, o2) -> wordcloud.get(o2).compareTo(wordcloud.get(o1)));
 
-
         List<List<Object>> result = new ArrayList<>();
         int cnt = 0;
         for (String s : wordcloud.keySet()) {
@@ -64,6 +63,7 @@ public class LocalNewsController {
             list.add(s);
             list.add(Integer.parseInt(wordcloud.get(s)));
             result.add(list);
+            System.out.println(s + " " + Integer.parseInt(wordcloud.get(s)));
             if(cnt++ >= 200)break;
         }
 
