@@ -11,6 +11,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -52,12 +53,18 @@ public class LocalNewsController {
     public ResponseEntity<List<List<Object>>> getWordCloud(){
         Jedis jedis = jedisPool.getResource();
         Map<String, String> wordcloud = jedis.hgetAll("wordcloud");
+        List<String> keySet = new ArrayList<>(wordcloud.keySet());
+        keySet.sort((o1, o2) -> wordcloud.get(o2).compareTo(wordcloud.get(o1)));
+
+
         List<List<Object>> result = new ArrayList<>();
+        int cnt = 0;
         for (String s : wordcloud.keySet()) {
             List<Object> list = new ArrayList<>();
             list.add(s);
             list.add(Integer.parseInt(wordcloud.get(s)));
             result.add(list);
+            if(cnt++ >= 200)break;
         }
 
         return new ResponseEntity<List<List<Object>>>(result, HttpStatus.OK);
