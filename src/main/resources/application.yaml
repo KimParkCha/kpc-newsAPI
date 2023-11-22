@@ -7,3 +7,8 @@ spring:
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace #스프링 부트 2.x, hibernate5
+
+redis:
+  host:
+  port :
+  password:

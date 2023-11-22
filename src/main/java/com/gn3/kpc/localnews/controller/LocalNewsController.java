@@ -1,12 +1,15 @@
 package com.gn3.kpc.localnews.controller;
 
 import com.gn3.kpc.localnews.model.entity.LocalNews;
+import com.gn3.kpc.localnews.model.entity.Temperature;
 import com.gn3.kpc.localnews.service.LocalNewsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.util.List;
 
@@ -17,6 +20,9 @@ public class LocalNewsController {
 
     @Autowired
     LocalNewsService localNewsService;
+    @Autowired
+    JedisPool jedisPool;
+
 
     @ResponseBody
     @GetMapping("/cityCode/{cityCode}/dsvnCode/{dsvnCode}")
@@ -30,5 +36,16 @@ public class LocalNewsController {
         }else{
             return new ResponseEntity<List<LocalNews>>(localNews, HttpStatus.OK);
         }
+    }
+
+    @GetMapping("/temperature")
+    public ResponseEntity<Temperature> getTemperature(){
+        Jedis jedis = jedisPool.getResource();
+        String positive = jedis.get("positive");
+        String negative = jedis.get("negative");
+        Temperature temperature = new Temperature();
+        temperature.setPositive(positive);
+        temperature.setNegative(negative);
+        return new ResponseEntity<Temperature>(temperature, HttpStatus.OK);
     }
 }
