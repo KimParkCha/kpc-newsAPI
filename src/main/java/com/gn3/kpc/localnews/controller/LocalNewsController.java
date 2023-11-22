@@ -46,7 +46,7 @@ public class LocalNewsController {
         double positive = Double.parseDouble(jedis.get("positive"));
         double negative = Double.parseDouble(jedis.get("negative"));
         int result = (int) ((positive/(positive + negative))*100.0);
-        jedis.close();
+        jedisPool.returnResource(jedis);
         return new ResponseEntity<Integer>(result, HttpStatus.OK);
     }
 
@@ -66,7 +66,8 @@ public class LocalNewsController {
             result.add(list);
             if(cnt++ >= 200)break;
         }
-        jedis.close();
+
+        jedisPool.returnResource(jedis);
         return new ResponseEntity<List<List<Object>>>(result, HttpStatus.OK);
     }
 }
